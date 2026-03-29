@@ -3,6 +3,7 @@
 import {Server} from 'http'
 import mongoose from 'mongoose';
 import app from './app';
+import { envVars } from './app/config/env';
 
 
 let server:Server;
@@ -11,10 +12,10 @@ let server:Server;
 const startServer = async()=>{
      try {
 
-         await mongoose.connect("mongodb+srv://majharul2022:majharul2022@cluster0.5g7cb.mongodb.net/tourDB?retryWrites=true&w=majority&appName=Cluster0");
+         await mongoose.connect(envVars.DB_URL);
          
-         server = app.listen(5000,()=>{
-             console.log(`Server is running in ${5000}`);
+         server = app.listen(envVars.PORT,()=>{
+             console.log(`Server is running in ${envVars.PORT}`);
          })
 
 
