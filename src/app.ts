@@ -1,11 +1,14 @@
 
  
 
-import express, { type Request, type Response } from 'express';
+import express, {   type Request, type Response } from 'express';
 import cors from 'cors'
 import { router } from './app/routers';
+import { globalErrorHandler } from './app/middleware/globalErrorHandler';
+import { NOT_FOUND } from 'http-status-codes';
+import { notFound } from './app/middleware/notFound';
 
-const app = express();
+export const app = express();
 
 
 app.use(express.json());
@@ -23,4 +26,5 @@ app.get('/',(req:Request,res:Response)=>{
 
 
 
-export default app;
+ app.use(globalErrorHandler);
+ app.use(notFound)
