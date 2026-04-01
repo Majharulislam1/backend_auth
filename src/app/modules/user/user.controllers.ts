@@ -15,8 +15,6 @@ const createUserControllers = catchAsync(async (req: Request, res: Response) => 
         message: "User Created Successfully",
         data: user,
     })
-
-
 })
 
 
@@ -34,9 +32,30 @@ const getAllUser = catchAsync(async(req:Request,res:Response)=>{
 })
 
 
+const updateUserControllers = catchAsync(async(req:Request,res:Response)=>{
+    
+    const userId = req.params.id as string;
+
+    const verifiedToken = req.user;
+    const payload = req.body;
+
+      const user = await userService.updateUserService(userId, payload, verifiedToken)
+
+     sendResponse(res, {
+        success: true,
+        statusCode: OK,
+        message: "Update User Successfully",
+        data:user
+      
+    })
+
+})
+
+
 
 
 export const UserControllers = {
      createUserControllers,
-     getAllUser
+     getAllUser,
+     updateUserControllers
 }
