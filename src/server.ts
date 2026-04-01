@@ -32,7 +32,7 @@ const startServer = async()=>{
 
 (async ()=>{
      await startServer();
-     await seedSuperAdmin
+     await seedSuperAdmin();
 })()
 
 
