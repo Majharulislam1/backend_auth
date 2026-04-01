@@ -4,6 +4,8 @@ import AppError from "../../errorHelpers/AppErro";
 import { IUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import jwt from 'jsonwebtoken'
+import { generateToken } from '../../utils/jwt';
+import { envVars } from '../../config/env';
 
 
 
@@ -30,10 +32,7 @@ const credentialLogin = async (payload: Partial<IUser>) => {
          role:isUserExist.role
     }
     
-    const accessToken = jwt.sign(data,'secret',{
-         expiresIn:'1d'
-    })
-
+    const accessToken = generateToken(data,envVars.JWT_ACCESS_SECRET,envVars.JWT_ACCESS_EXPIRE);
 
    return {
       accessToken
