@@ -6,6 +6,7 @@ import { User } from "../user/user.model";
 import jwt from 'jsonwebtoken'
 import { generateToken } from '../../utils/jwt';
 import { envVars } from '../../config/env';
+import { createNewAccessTokenWithRefreshToken, createUserTokens } from '../../utils/userTokens';
 
 
 
@@ -26,18 +27,35 @@ const credentialLogin = async (payload: Partial<IUser>) => {
     }
 
 
-    const data = {
-         userId :isUserExist._id,
-         email:isUserExist.email,
-         role:isUserExist.role
-    }
+    // const data = {
+    //      userId :isUserExist._id,
+    //      email:isUserExist.email,
+    //      role:isUserExist.role
+    // }
     
-    const accessToken = generateToken(data,envVars.JWT_ACCESS_SECRET,envVars.JWT_ACCESS_EXPIRE);
+    // const accessToken = generateToken(data,envVars.JWT_ACCESS_SECRET,envVars.JWT_ACCESS_EXPIRE);
+    // const refreshToken = generateToken(data,envVars.JWT_REFRESH_SECRET,envVars.JWT_REFRESH_EXPIRE);
+
+    const userToken = createUserTokens(isUserExist);
+
+    const {password : pass ,...rest} = isUserExist.toObject();
 
    return {
-      accessToken
+      accessToken:userToken.accessToken,
+      refreshToken:userToken.refreshToken,
+      user:rest
    }
 
+}
+
+
+
+const getNewAccessToken= async(refreshToken:string)=>{
+     const newAccessToken = await createNewAccessTokenWithRefreshToken(refreshToken);
+
+     return {
+         accessToken:newAccessToken
+     }
 }
 
 
@@ -47,5 +65,6 @@ const credentialLogin = async (payload: Partial<IUser>) => {
 
 
 export const authService = {
-    credentialLogin
+    credentialLogin,
+    getNewAccessToken
 }
