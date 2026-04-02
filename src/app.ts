@@ -7,11 +7,13 @@ import { router } from './app/routers';
 import { globalErrorHandler } from './app/middleware/globalErrorHandler';
 import { NOT_FOUND } from 'http-status-codes';
 import { notFound } from './app/middleware/notFound';
+import cookieParser from 'cookie-parser';
 
 export const app = express();
 
 
 app.use(express.json());
+app.use(cookieParser())
 app.use(cors());
 
 
