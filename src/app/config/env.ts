@@ -7,7 +7,7 @@ dotenv.config()
 
 
 
-
+ 
 
 
 interface EnvConfig {
@@ -18,13 +18,17 @@ interface EnvConfig {
     JWT_ACCESS_EXPIRE: string,
     JWT_ACCESS_SECRET: string,
     SUPER_ADMIN_EMAIL: string,
-    SUPER_ADMIN_PASSWORD: string
+    SUPER_ADMIN_PASSWORD: string,
+    JWT_REFRESH_SECRET:string,
+    JWT_REFRESH_EXPIRE:string
 }
 
 const loadEnvVariables = (): EnvConfig => {
     const requiredEnvVariables: string[] = ["PORT", "DB_URL", "NODE_ENV", "BCRYPT_SLOT_ROUND", "JWT_ACCESS_EXPIRE", "JWT_ACCESS_SECRET",
         "SUPER_ADMIN_EMAIL",
-        "SUPER_ADMIN_PASSWORD"
+        "SUPER_ADMIN_PASSWORD",
+        "JWT_REFRESH_EXPIRE",
+        "JWT_REFRESH_SECRET"
     ];
 
     requiredEnvVariables.forEach(key => {
@@ -42,7 +46,10 @@ const loadEnvVariables = (): EnvConfig => {
         JWT_ACCESS_EXPIRE: process.env.JWT_ACCESS_EXPIRE as string,
         JWT_ACCESS_SECRET: process.env.JWT_ACCESS_SECRET as string,
         SUPER_ADMIN_EMAIL: process.env.SUPER_ADMIN_EMAIL as string,
-        SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD as string
+        SUPER_ADMIN_PASSWORD: process.env.SUPER_ADMIN_PASSWORD as string,
+        JWT_REFRESH_EXPIRE:process.env.JWT_REFRESH_EXPIRE as string,
+        JWT_REFRESH_SECRET:process.env.JWT_REFRESH_SECRET as string
+
     }
 }
 
