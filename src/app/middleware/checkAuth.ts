@@ -17,9 +17,10 @@ export const checkAuth = (...authRoles:string[]) => async (req: Request, res: Re
             throw new AppError(403, "No Token Received")
         }
 
-        const verify_Token = verifyToken(accessToken,envVars.JWT_ACCESS_SECRET) as JwtPayload;
+        const verified_Token = verifyToken(accessToken,envVars.JWT_ACCESS_SECRET) as JwtPayload;
          
-        const isUserExist = await User.findOne({ email: verify_Token.email })
+        const isUserExist = await User.findOne({ email: verified_Token.email });
+        
 
         if (!isUserExist) {
             throw new AppError(BAD_REQUEST, "User does not exist")
@@ -32,11 +33,13 @@ export const checkAuth = (...authRoles:string[]) => async (req: Request, res: Re
         }
 
 
-         if (!authRoles.includes(verify_Token.role)) {
+         if (!authRoles.includes(verified_Token.role)) {
             throw new AppError(403, "You are not permitted to view this route!!!")
         }
+        
+         
 
-        req.user = verifyToken;
+        req.user = verified_Token;
 
        next();
 
