@@ -9,8 +9,21 @@ import { NOT_FOUND } from 'http-status-codes';
 import { notFound } from './app/middleware/notFound';
 import cookieParser from 'cookie-parser';
 
+import expressSession from 'express-session'
+import { envVars } from './app/config/env';
+import passport from 'passport';
+
 export const app = express();
 
+
+
+app.use(expressSession({
+    secret: envVars.EXPRESS_SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false
+}))
+
+app.use(passport.initialize());
 
 app.use(express.json());
 app.use(cookieParser())
