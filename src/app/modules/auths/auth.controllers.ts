@@ -5,6 +5,7 @@ import { BAD_REQUEST, OK } from "http-status-codes";
 import { sendResponse } from "../../utils/sendRespons";
 import AppError from "../../errorHelpers/AppErro";
 import { setAuthCookie } from "../../utils/setCookes";
+import { JwtPayload } from "jsonwebtoken";
 
 
 const credentialLogin = catchAsync(async (req: Request, res: Response) => {
@@ -39,8 +40,56 @@ const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: N
      sendResponse(res, {
         success: true,
         statusCode: OK,
-        message: "New Access Token Retrived Successfully",
+        message: "New Access Token Retrieved Successfully",
         data: tokenInfo,
+    })
+
+})
+
+
+const logOut = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    
+     res.clearCookie("accessToken",{
+         httpOnly:true,
+         secure:false,
+         sameSite:"lax"
+     })
+
+     res.clearCookie("refreshToken",{
+          httpOnly:true,
+          secure:false,
+          sameSite:"lax"
+     })
+     
+     
+     sendResponse(res, {
+        success: true,
+        statusCode: OK,
+        message: "User Logout Successfully",
+        data: null
+    })
+
+})
+
+
+
+const resetPassword = catchAsync(async (req: Request, res: Response, next: NextFunction) => {
+    
+      const newPassword = req.body.newPassword;
+      const oldPassword = req.body.oldPassword;
+      const decodedToken = req.user;
+
+ 
+
+      await authService.restPasswordService(oldPassword,newPassword,decodedToken as JwtPayload);
+
+      
+     
+     sendResponse(res, {
+        success: true,
+        statusCode: OK,
+        message: "User Password Changed Successfully",
+        data: null
     })
 
 })
@@ -48,7 +97,10 @@ const getNewAccessToken = catchAsync(async (req: Request, res: Response, next: N
 
 
 
+
 export const authControllers = {
     credentialLogin,
-    getNewAccessToken
+    getNewAccessToken,
+    logOut,
+    resetPassword
 }
