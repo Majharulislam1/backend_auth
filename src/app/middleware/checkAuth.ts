@@ -3,6 +3,9 @@ import AppError from "../errorHelpers/AppErro";
 import { verifyToken } from "../utils/jwt";
 import { envVars } from "../config/env";
 import { JwtPayload } from "jsonwebtoken";
+import { User } from "../modules/user/user.model";
+import { BAD_REQUEST } from "http-status-codes";
+import { IsActive } from "../modules/user/user.interface";
 
 export const checkAuth = (...authRoles:string[]) => async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -14,13 +17,29 @@ export const checkAuth = (...authRoles:string[]) => async (req: Request, res: Re
             throw new AppError(403, "No Token Received")
         }
 
-        const verify_Token = verifyToken(accessToken,envVars.JWT_ACCESS_SECRET) as JwtPayload;
+        const verified_Token = verifyToken(accessToken,envVars.JWT_ACCESS_SECRET) as JwtPayload;
+         
+        const isUserExist = await User.findOne({ email: verified_Token.email });
+        
 
-         if (!authRoles.includes(verify_Token.role)) {
-            throw new AppError(403, "You are not permitted to view this route!!!")
+        if (!isUserExist) {
+            throw new AppError(BAD_REQUEST, "User does not exist")
+        }
+        if (isUserExist.isActive === IsActive.BLOCKED || isUserExist.isActive === IsActive.INACTIVE) {
+            throw new AppError(BAD_REQUEST, `User is ${isUserExist.isActive}`)
+        }
+        if (isUserExist.isDeleted) {
+            throw new AppError(BAD_REQUEST, "User is deleted")
         }
 
-        req.user = verifyToken;
+
+         if (!authRoles.includes(verified_Token.role)) {
+            throw new AppError(403, "You are not permitted to view this route!!!")
+        }
+        
+         
+
+        req.user = verified_Token;
 
        next();
 
