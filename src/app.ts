@@ -1,7 +1,7 @@
 
- 
 
-import express, {   type Request, type Response } from 'express';
+
+import express, { type Request, type Response } from 'express';
 import cors from 'cors'
 import { router } from './app/routers';
 import { globalErrorHandler } from './app/middleware/globalErrorHandler';
@@ -20,7 +20,7 @@ app.use(cookieParser())
 app.use(cors());
 
 
-app.use('/api/v1',router);
+
 
 
 app.use(expressSession({
@@ -37,16 +37,16 @@ app.use(cookieParser())
 app.use(cors());
 
 
-app.use('/api/v1',router);
+app.use('/api/v1', router);
 
 
-app.get('/',(req:Request,res:Response)=>{
-     res.send({
-         message:"Server is running",
-     })
+app.get('/', (req: Request, res: Response) => {
+    res.send({
+        message: "Server is running",
+    })
 })
 
 
 
- app.use(globalErrorHandler);
- app.use(notFound)
+app.use(globalErrorHandler);
+app.use(notFound)
