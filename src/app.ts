@@ -8,7 +8,7 @@ import { globalErrorHandler } from './app/middleware/globalErrorHandler';
 import { NOT_FOUND } from 'http-status-codes';
 import { notFound } from './app/middleware/notFound';
 import cookieParser from 'cookie-parser';
-
+import './app/config/passport'
 import expressSession from 'express-session'
 import { envVars } from './app/config/env';
 import passport from 'passport';
@@ -30,6 +30,7 @@ app.use(expressSession({
 }))
 
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.json());
 app.use(cookieParser())
