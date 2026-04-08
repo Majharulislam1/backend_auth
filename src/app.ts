@@ -1,14 +1,14 @@
 
- 
 
-import express, {   type Request, type Response } from 'express';
+
+import express, { type Request, type Response } from 'express';
 import cors from 'cors'
 import { router } from './app/routers';
 import { globalErrorHandler } from './app/middleware/globalErrorHandler';
 import { NOT_FOUND } from 'http-status-codes';
 import { notFound } from './app/middleware/notFound';
 import cookieParser from 'cookie-parser';
-
+import './app/config/passport'
 import expressSession from 'express-session'
 import { envVars } from './app/config/env';
 import passport from 'passport';
@@ -20,7 +20,7 @@ app.use(cookieParser())
 app.use(cors());
 
 
-app.use('/api/v1',router);
+
 
 
 app.use(expressSession({
@@ -30,22 +30,23 @@ app.use(expressSession({
 }))
 
 app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors());
 
 
-app.use('/api/v1',router);
+app.use('/api/v1', router);
 
 
-app.get('/',(req:Request,res:Response)=>{
-     res.send({
-         message:"Server is running",
-     })
+app.get('/', (req: Request, res: Response) => {
+    res.send({
+        message: "Server is running",
+    })
 })
 
 
 
- app.use(globalErrorHandler);
- app.use(notFound)
+app.use(globalErrorHandler);
+app.use(notFound)
