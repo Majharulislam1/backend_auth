@@ -8,21 +8,62 @@ import { setAuthCookie } from "../../utils/setCookes";
 import { JwtPayload } from "jsonwebtoken";
 import { createUserTokens } from "../../utils/userTokens";
 import { envVars } from "../../config/env";
+import passport from "passport";
 
 
-const credentialLogin = catchAsync(async (req: Request, res: Response) => {
+// const credentialLogin = catchAsync(async (req: Request, res: Response) => {
 
-    const user = await authService.credentialLogin(req.body);
+//     const user = await authService.credentialLogin(req.body);
 
-    setAuthCookie(res, user);
+//     setAuthCookie(res, user);
 
-    sendResponse(res, {
-        success: true,
-        statusCode: OK,
-        message: "User Login Successfully",
-        data: user
-    })
+//     sendResponse(res, {
+//         success: true,
+//         statusCode: OK,
+//         message: "User Login Successfully",
+//         data: user
+//     })
+// })
 
+
+const credentialLogin = catchAsync(async (req: Request, res: Response,next:NextFunction) => {
+
+    
+    passport.authenticate("local",async(err:any,user:any,info:any)=>{
+          if(err){
+                  // ❌❌❌❌❌
+            // throw new AppError(401, "Some error")
+            // next(err)
+            // return new AppError(401, err)
+            // ✅✅✅✅
+            // return next(err)
+            // console.log("from err");
+            return next(new AppError(401, err))
+          }
+
+          if(!user){
+            return next(new AppError(401, info.message))
+          }
+
+          const userTokens = await createUserTokens(user);
+
+           const { password: pass, ...rest } = user.toObject();
+            setAuthCookie(res, userTokens);
+
+             sendResponse(res, {
+            success: true,
+            statusCode: OK,
+            message: "User Logged In Successfully",
+            data: {
+                accessToken: userTokens.accessToken,
+                refreshToken: userTokens.refreshToken,
+                user: rest
+
+            },
+        })
+       
+
+    }) (req,res,next);
 })
 
 
