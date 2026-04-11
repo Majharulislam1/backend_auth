@@ -1,4 +1,4 @@
-import { model, SaveOptions, Schema } from "mongoose";
+import { CallbackWithoutResultAndOptionalError, model,   Schema } from "mongoose";
 import { IDivision } from "./division.interface";
 
 
@@ -15,28 +15,27 @@ const divisionSchema = new Schema<IDivision>({
 })
 
 
+divisionSchema.pre<IDivision>("save", async function (this:IDivision) {
 
-divisionSchema.pre("save", async function(next:SaveOptions){
-     
-    if(this.isModified("name")){
-         const baseSlug = this.name.toLowerCase().split(" ").join("-");
-         let slug = `${baseSlug}-division`;
+    if (this.isModified("name")) {
+        const baseSlug = `${this.name.toLowerCase().split(" ").join("-")}-division`;
+
+        let slug = baseSlug;
+        let counter = 1;
+
          
-         let counter = 0;
+        while (await Division.exists({ slug, _id: { $ne: this._id } })) {
+            slug = `${baseSlug}-${counter++}`;
+        }
 
-         while(await Division.exists({slug})){
-             slug = `${slug}-${counter++}`
-         }
-
-         this.slug = slug
-
+        this.slug = slug;
     }
 
-    next()
-})
-
+    
+});
  
 
+ 
 
 
 
