@@ -45,8 +45,38 @@ const getSingleDivision = catchAsync(async (req: Request, res: Response) => {
 })
 
 
+
+const updateDivision = catchAsync(async (req: Request, res: Response) => {
+
+    const result = await divisionService.updateDivision(req.params.id as string, req.body);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: OK,
+        message: "Successfully Update Single Division",
+        data: result,
+
+    })
+})
+
+
+const deleteDivision = catchAsync(async (req: Request, res: Response) => {
+
+    const result = await divisionService.deleteDivision(req.params.id as string);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: OK,
+        message: "Successfully Delete Single Division",
+        data: result
+    })
+})
+
+
 export const divisionControllers = {
     createDivision,
     getAllDivision,
-    getSingleDivision
+    getSingleDivision,
+    updateDivision,
+    deleteDivision
 }
