@@ -12,4 +12,9 @@ export const divisionRoute = Router();
 
 divisionRoute.post("/create", validateRequest(createDivisionSchema),checkAuth(Role.ADMIN,Role.SUPER_ADMIN),divisionControllers.createDivision);
 
+divisionRoute.get("/",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),divisionControllers.getAllDivision);
+divisionRoute.patch("/:id",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),divisionControllers.updateDivision);
+divisionRoute.get("/:id",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),divisionControllers.getSingleDivision);
+divisionRoute.delete("/:id",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),divisionControllers.deleteDivision);
+
 
