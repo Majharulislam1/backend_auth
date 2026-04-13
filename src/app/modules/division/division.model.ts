@@ -10,7 +10,8 @@ const divisionSchema = new Schema<IDivision>({
     thumbnail: { type: String },
     description: { type: String }
 
-}, {
+},
+{
     timestamps: true
 })
 
@@ -30,8 +31,6 @@ divisionSchema.pre<IDivision>("save", async function (this:IDivision) {
 
         this.slug = slug;
     }
-
-    
 });
  
 
