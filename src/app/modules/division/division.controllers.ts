@@ -18,6 +18,35 @@ const createDivision = catchAsync(async (req: Request, res: Response) => {
 })
 
 
+ const getAllDivision = catchAsync(async (req:Request,res:Response)=>{
+       
+     const result = await divisionService.getAllDivision();
+
+    sendResponse(res, {
+        success: true,
+        statusCode:  CREATED,
+        message: "Successfully Get All Division",
+        data: result.data,
+        meta:result.meta
+    })
+ })
+
+  const getSingleDivision = catchAsync(async (req:Request,res:Response)=>{
+       
+     const result = await divisionService.getSingleDivision(req.params?.id as string);
+
+    sendResponse(res, {
+        success: true,
+        statusCode:  CREATED,
+        message: "Successfully Get Single Division",
+        data: result.data,
+        
+    })
+ })
+
+
 export const divisionControllers = {
-     createDivision
+     createDivision,
+     getAllDivision,
+     getSingleDivision
 }

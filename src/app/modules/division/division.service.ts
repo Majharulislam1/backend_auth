@@ -20,6 +20,32 @@ const createDivisionService = async (payload: IDivision) => {
 
 
 
+const getAllDivision = async () => {
+
+    const divisions = await Division.find({});
+    const totalDivision = await Division.countDocuments();
+
+
+    return {
+        data: divisions,
+        meta: {
+            total: totalDivision
+        }
+    }
+}
+
+
+const getSingleDivision = async (id: string) => {
+
+    const division = await Division.findById(id);
+
+    return {
+         data:division
+    }
+
+}
+
+
 
 
 
@@ -27,4 +53,6 @@ const createDivisionService = async (payload: IDivision) => {
 
 export const divisionService = {
     createDivisionService,
+    getAllDivision,
+    getSingleDivision
 }
