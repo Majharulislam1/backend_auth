@@ -1,5 +1,5 @@
 import { ITour, ITourType } from "./tour.interface";
-import { Tour,TourType } from "./tour.model";
+import { Tour, TourType } from "./tour.model";
 
 
 
@@ -67,12 +67,24 @@ const createTourService = async (payload: ITour) => {
 
 }
 
+const updateTourService = async (id: string, payload: Partial<ITour>) => {
+    const existingTour = await Tour.findById(id);
+    if (!existingTour) {
+        throw new Error("Tour not found.");
+    }
+
+    const updatedTour = await Tour.findByIdAndUpdate(id, payload, { new: true });
+    return updatedTour;
+
+}
+
 
 export const tourService = {
     createTourType,
     getAllTourType,
     updateTourTypes,
     deleteTourTypes,
-    createTourService
+    createTourService,
+    updateTourService
 }
 

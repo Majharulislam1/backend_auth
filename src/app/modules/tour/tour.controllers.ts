@@ -71,10 +71,27 @@ const createTour = catchAsync(async (req: Request, res: Response) => {
     sendResponse(res, {
         success: true,
         statusCode: CREATED,
-        message: "TourType Created Successfully",
+        message: "Tour Created Successfully",
         data: tour,
     })
 })
+
+
+const updateTourControllers = catchAsync(async (req: Request, res: Response) => {
+
+    const tour = await tourService.updateTourService(req.params.id as string,req.body);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: CREATED,
+        message: "Tour updated successfully",
+        data: tour,
+    })
+})
+
+
+
+
 
 
 
@@ -85,6 +102,8 @@ export const tourControllers = {
      getAllTourType,
      deleteTourType,
      createTour,
+     updateTourControllers,
+
 }
 
 

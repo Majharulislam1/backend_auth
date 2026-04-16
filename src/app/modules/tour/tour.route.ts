@@ -3,7 +3,7 @@ import { tourControllers } from "./tour.controllers";
 import { Role } from "../user/user.interface";
 import { checkAuth } from "../../middleware/checkAuth";
 import { validateRequest } from "../../middleware/validateRequest";
-import { createTourZodSchema } from "./tour.validation";
+import { createTourZodSchema, updateTourZodSchema } from "./tour.validation";
 
 
 
@@ -22,6 +22,9 @@ tourRoute.delete("/delete-tour-type/:id",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),
 //    ----------------------------- tour --------------------------------- 
 
 tourRoute.post("/create-tour",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),validateRequest(createTourZodSchema) ,tourControllers.createTour);
+tourRoute.patch("/update-tour/:id",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),validateRequest(updateTourZodSchema),tourControllers.updateTourControllers);
+
+
 
 
 
