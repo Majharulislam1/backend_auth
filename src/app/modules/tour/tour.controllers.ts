@@ -61,11 +61,78 @@ const deleteTourType = catchAsync(async (req: Request, res: Response) => {
 })
 
 
+// for tour 
+
+
+const createTour = catchAsync(async (req: Request, res: Response) => {
+
+    const tour = await tourService.createTourService(req.body);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: CREATED,
+        message: "Tour Created Successfully",
+        data: tour,
+    })
+})
+
+
+const updateTourControllers = catchAsync(async (req: Request, res: Response) => {
+
+    const tour = await tourService.updateTourService(req.params.id as string,req.body);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: CREATED,
+        message: "Tour updated successfully",
+        data: tour,
+    })
+})
+
+
+
+const getAllTourControllers = catchAsync(async (req: Request, res: Response) => {
+      
+      const query = req.query
+    const result = await tourService.getAllToursService(query as Record<string, string>);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Tours retrieved successfully',
+        data: result.data,
+        meta: result.meta,
+    });
+     
+
+
+});
+
+
+
+const deleteTourControllers =  catchAsync(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await tourService.deleteTour(id as string);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Tour deleted successfully',
+        data: result,
+    });
+});
+
+
+
+
 export const tourControllers = {
      createTourType,
      updateTourType,
      getAllTourType,
-     deleteTourType
+     deleteTourType,
+     createTour,
+     updateTourControllers,
+     getAllTourControllers,
+     deleteTourControllers
+
 }
 
 
