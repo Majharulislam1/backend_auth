@@ -81,7 +81,7 @@ const updateTourService = async (id: string, payload: Partial<ITour>) => {
 }
 
 
-const getAllToursService = async(query: Record<string, string>)=>{
+const getAllToursService = async (query: Record<string, string>) => {
 
     const queryBuilder = new QueryBuilder(Tour.find(), query)
 
@@ -104,7 +104,12 @@ const getAllToursService = async(query: Record<string, string>)=>{
         data,
         meta
     }
-     
+
+}
+
+
+const deleteTour = async (id: string) => {
+    return await Tour.findByIdAndDelete(id);
 }
 
 
@@ -115,6 +120,7 @@ export const tourService = {
     deleteTourTypes,
     createTourService,
     updateTourService,
-    getAllToursService
+    getAllToursService,
+    deleteTour
 }
 

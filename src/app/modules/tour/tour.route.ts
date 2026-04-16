@@ -23,7 +23,7 @@ tourRoute.delete("/delete-tour-type/:id",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),
 tourRoute.get("/",tourControllers.getAllTourControllers);
 tourRoute.post("/create-tour",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),validateRequest(createTourZodSchema) ,tourControllers.createTour);
 tourRoute.patch("/update-tour/:id",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),validateRequest(updateTourZodSchema),tourControllers.updateTourControllers);
-
+tourRoute.delete("/:id",checkAuth(Role.ADMIN,Role.SUPER_ADMIN),tourControllers.deleteTourControllers);
 
 
 
