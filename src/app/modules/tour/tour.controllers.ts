@@ -61,11 +61,30 @@ const deleteTourType = catchAsync(async (req: Request, res: Response) => {
 })
 
 
+// for tour 
+
+
+const createTour = catchAsync(async (req: Request, res: Response) => {
+
+    const tour = await tourService.createTourService(req.body);
+
+    sendResponse(res, {
+        success: true,
+        statusCode: CREATED,
+        message: "TourType Created Successfully",
+        data: tour,
+    })
+})
+
+
+
+
 export const tourControllers = {
      createTourType,
      updateTourType,
      getAllTourType,
-     deleteTourType
+     deleteTourType,
+     createTour,
 }
 
 

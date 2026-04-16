@@ -1,4 +1,4 @@
-import { CallbackWithoutResultAndOptionalError, model,   Schema } from "mongoose";
+import {  model,   Schema } from "mongoose";
 import { IDivision } from "./division.interface";
 
 

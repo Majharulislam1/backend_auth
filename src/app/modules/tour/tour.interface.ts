@@ -1,11 +1,11 @@
-import { Types } from "mongoose";
+import { Document, Types } from "mongoose";
 
 export interface ITourType {
     name: string;
 }
-export interface ITour {
+export interface ITour extends Document {
     title: string;
-    slug: string;
+    slug?: string;
     description?: string;
     images?: string[];
     location?: string;
