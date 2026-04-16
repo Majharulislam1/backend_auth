@@ -91,6 +91,22 @@ const updateTourControllers = catchAsync(async (req: Request, res: Response) => 
 
 
 
+const getAllTourControllers = catchAsync(async (req: Request, res: Response) => {
+      
+      const query = req.query
+    const result = await tourService.getAllToursService(query as Record<string, string>);
+    sendResponse(res, {
+        statusCode: 200,
+        success: true,
+        message: 'Tours retrieved successfully',
+        data: result.data,
+        meta: result.meta,
+    });
+     
+
+
+});
+
 
 
 
@@ -103,6 +119,7 @@ export const tourControllers = {
      deleteTourType,
      createTour,
      updateTourControllers,
+     getAllTourControllers
 
 }
 
